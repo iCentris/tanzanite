@@ -58,16 +58,13 @@ class LoginPage extends Component {
           <div>
             Congratulations, login was successful.
             <br />
-            <b>Return URL: </b>
-            {return_url}
-            <br />
             <a href={return_url}>
               <button>Go to Return URL</button>
             </a>
           </div>
         )}
         {error && <div>Error! {error.message}</div>}
-        <LoginForm {...this.props} handleSubmit={this.handleSubmit} />
+        {!isSuccess && <LoginForm {...this.props} handleSubmit={this.handleSubmit} /> }
       </React.Fragment>
     );
   }

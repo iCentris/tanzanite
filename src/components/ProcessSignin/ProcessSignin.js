@@ -69,9 +69,6 @@ class ProcessSignin extends Component {
       <React.Fragment>
         Congratulations, siginin was successful.
         <br />
-        <b>Return URL: </b>
-        {return_url}
-        <br />
         <a href={return_url}>
           <button>Go to Return URL</button>
         </a>

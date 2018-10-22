@@ -23,7 +23,6 @@ class ProcessSignout extends Component {
   }
 
   componentDidMount() {
-    console.log("componentdidmount");
     Promise.resolve()
       .then(() => {
         const return_url = this.retrieveReturnUrl(this.props.location.search);
@@ -31,7 +30,6 @@ class ProcessSignout extends Component {
       })
       .then(return_url => {
         return this.props.auth.signout().then(() => {
-          console.log("successState");
           this.setState({
             initialized: true,
             isSuccess: true,
@@ -41,7 +39,7 @@ class ProcessSignout extends Component {
         });
       })
       .catch(error => {
-        console.log("failstate");
+        //signout isn't implemented yet server side
         this.setState({
           initialized: true,
           isSuccess: false,
@@ -64,9 +62,6 @@ class ProcessSignout extends Component {
     return (
       <React.Fragment>
         Congratulations, signout was successful.
-        <br />
-        <b>Return URL: </b>
-        {return_url}
         <br />
         <a href={return_url}>
           <button>Go to Return URL</button>
