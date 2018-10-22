@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withAuth } from "../AuthContext";
+import { Link } from "react-router-dom";
 
 class ProtectedApp extends Component {
   constructor(props) {
@@ -21,14 +22,23 @@ class ProtectedApp extends Component {
   }
 
   render() {
-    const { isVerified } = this.props.auth.state;
+    const { isVerified } = this.props.auth;
 
-    if (isVerified)
-      return <div>Welcome to the protected App. Enjoy your stay!</div>;
+    if (isVerified) {
+      return (
+        <div>
+          Welcome to the protected App. Enjoy your stay!
+          <br />
+          <Link to="/signout">
+            <button>Signout</button>
+          </Link>
+        </div>
+      );
+    }
 
     return (
       <div>
-        Unauthorized access, please
+        Unauthorized access, please <br />
         <a href={this.getLoginUrl()}>
           <button>Login</button>
         </a>

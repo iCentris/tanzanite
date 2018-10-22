@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import format from "string-template";
 import urlencode from "urlencode";
+import formurlencoded from "form-urlencoded";
+
 // import fetch from "isomorphic-fetch";
 
 class Auth {
@@ -20,21 +22,35 @@ class Auth {
   }
 
   fetchWrap({ url, options }) {
+    options = {
+      ...(options || {}),
+      credentials: "omit"
+    };
     return fetch(url, options)
-      .then(response =>
-        response.json().then(json => Promise.resolve({ response, data: json }))
-      )
-      .then(
-        payload =>
-          payload.response.ok
-            ? Promise.resolve(payload)
-            : Promise.reject(payload)
-      );
+      .then(response => {
+        return response
+          .text()
+          .then(text => Promise.resolve({ response, text }));
+      })
+      .then(({ response, text }) => {
+        if (!text) text = "";
+
+        let data = {};
+
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          data = JSON.parse(JSON.stringify(text));
+        }
+
+        const payload = { response, data };
+        return response.ok ? Promise.resolve(payload) : Promise.reject(payload);
+      });
   }
 
   getAuthorizationHeader(access_token) {
     return {
-      authorization: "Bearer " + access_token
+      authorization: format("Bearer {access_token}", { access_token })
     };
   }
 
@@ -50,7 +66,6 @@ class Auth {
       url: this.getVerifyAccessTokenUrl(),
       options: {
         method: "GET",
-        credentials: "omit",
         headers: {
           ...this.getAuthorizationHeader(access_token)
         }
@@ -75,9 +90,10 @@ class Auth {
       url: this.getRefreshAccessTokenUrl(),
       options: {
         method: "POST",
-        credentials: "omit",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formurlencoded({
           client_assertion_type:
             "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
           client_assertion: this.getRefreshRequestJWT(refresh_request)
@@ -99,9 +115,10 @@ class Auth {
       url: this.getSigninUrl(),
       options: {
         method: "POST",
-        credentials: "omit",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formurlencoded(payload)
       }
     };
 
@@ -119,14 +136,15 @@ class Auth {
       url: this.getAuthUrl("/signout"),
       options: {
         method: "DELETE",
-        credentials: "omit",
         headers: {
           ...this.getAuthorizationHeader(access_token)
         }
       }
     };
 
-    return this.fetchWrap(payload);
+    return this.fetchWrap(payload)
+      .then(() => Promise.resolve())
+      .catch(() => Promise.reject(Error("signoutError")));
   }
 
   getRefresh_request_expires_in() {

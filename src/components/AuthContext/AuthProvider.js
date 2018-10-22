@@ -25,9 +25,8 @@ class AuthProvider extends React.Component {
       }
     };
 
-    this.state = this.initialState;
-
     this.hydrateAuthState = this.hydrateAuthState.bind(this);
+    this.setStateAndPersist = this.setStateAndPersist.bind(this);
     this.persistAuthState = this.persistAuthState.bind(this);
     this.getPersistedAuthState = this.getPersistedAuthState.bind(this);
     this.getResetAuthStateVars = this.getResetAuthStateVars.bind(this);
@@ -43,12 +42,32 @@ class AuthProvider extends React.Component {
     this.login = this.login.bind(this);
     this.getReturnUrl = this.getReturnUrl.bind(this);
     this.buildSigninPayload = this.buildSigninPayload.bind(this);
+
+    this.state = {
+      ...this.initialState,
+      signinAndRefresh: this.signinAndRefresh,
+      verifyAccessToken: this.verifyAccessToken,
+      verifyOrRefresh: this.verifyOrRefresh,
+      refreshAccessToken: this.refreshAccessToken,
+      verifyRefreshOrLogin: this.verifyRefreshOrLogin,
+      refreshOrLogin: this.refreshOrLogin,
+      signin: this.signin,
+      signout: this.signout,
+      getLoginUrl: this.getLoginUrl,
+      login: this.login,
+      buildSigninPayload: this.buildSigninPayload,
+      getReturnUrl: this.getReturnUrl
+    };
+  }
+
+  setStateAndPersist(state_changes) {
+    this.setState(state_changes, this.persistAuthState);
   }
 
   persistAuthState() {
     //if the state is empty, just delete the key rather than save it
     if (isEqual(this.state.auth, this.initialState.auth)) {
-      return this.store.remove(this.storage_key);
+      return this.store.remove(this.store_key);
     }
 
     this.store.set(this.store_key, this.state.auth);
@@ -74,38 +93,43 @@ class AuthProvider extends React.Component {
     //this.store.remove(this.storage_key);
   }
 
-  hydrateAuthState() {
+  hydrateAuthState(cb) {
     const authState = this.getPersistedAuthState();
     if (!authState) return;
 
-    this.setState({
-      auth: authState
-    });
+    this.setState(
+      {
+        auth: authState
+      },
+      cb
+    );
   }
 
   componentDidMount() {
-    this.hydrateAuthState();
-
-    this.verifyOrRefresh()
-      .catch(error => {
-        this.setState({
-          isVerified: false,
-          error
+    const cb = () => {
+      this.verifyOrRefresh()
+        .catch(error => {
+          this.setState({
+            isVerified: false,
+            error
+          });
+        })
+        .finally(() => {
+          this.setState({
+            initialized: true,
+            isLoading: false
+          });
         });
-      })
-      .finally(() => {
-        this.setState({
-          initialized: true,
-          isLoading: false
-        });
-      });
+    };
 
-    window.addEventListener("pagehide", this.persistAuthState.bind(this));
+    this.hydrateAuthState(cb);
+
+    //window.addEventListener("pagehide", this.persistAuthState.bind(this));
   }
 
   componentWillUnmount() {
-    this.persistAuthState();
-    window.removeEventListener("pagehide", this.persistAuthState.bind(this));
+    //this.persistAuthState();
+    //window.removeEventListener("pagehide", this.persistAuthState.bind(this));
   }
 
   verifyOrRefresh() {
@@ -136,7 +160,7 @@ class AuthProvider extends React.Component {
         return Promise.resolve();
       })
       .catch(error => {
-        this.setState({
+        this.setStateAndPersist({
           isLoading: false,
           isVerified: false,
           error,
@@ -153,7 +177,7 @@ class AuthProvider extends React.Component {
     return this.props.auth
       .refreshAccessToken(this.state.auth.refresh_request)
       .then(access_token => {
-        this.setState({
+        this.setStateAndPersist({
           isLoading: false,
           isVerified: true,
           error: null,
@@ -165,7 +189,7 @@ class AuthProvider extends React.Component {
         return Promise.resolve(access_token);
       })
       .catch(error => {
-        this.setState({
+        this.setStateAndPersist({
           isLoading: false,
           isVerified: false,
           error,
@@ -182,7 +206,7 @@ class AuthProvider extends React.Component {
     return this.props.auth
       .signin(payload)
       .then(refresh_request => {
-        this.setState({
+        this.setStateAndPersist({
           isLoading: false,
           auth: {
             ...this.state.auth,
@@ -214,7 +238,30 @@ class AuthProvider extends React.Component {
   }
 
   signout() {
-    return this.props.auth.signout(this.state.auth.access_token);
+    return this.props.auth
+      .signout(this.state.auth.access_token)
+      .then(() => {
+        this.setStateAndPersist({
+          isLoading: false,
+          isVerified: false,
+          auth: this.initialState.auth
+        });
+        return Promise.resolve();
+      })
+      .catch(error => {
+        // no signout method on the server currently
+        this.setStateAndPersist({
+          isLoading: false,
+          isVerified: false,
+          auth: this.initialState.auth
+        });
+        return Promise.resolve();
+        /*this.setState({
+          isLoading: false,
+          error
+        });
+        return Promise.reject(error);*/
+      });
   }
 
   getReturnUrl() {
@@ -233,7 +280,7 @@ class AuthProvider extends React.Component {
   }
 
   render() {
-    return <Provider value={this}>{this.props.children}</Provider>;
+    return <Provider value={this.state}>{this.props.children}</Provider>;
   }
 }
 

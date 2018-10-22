@@ -52,7 +52,6 @@ class LoginPage extends Component {
 
   render() {
     const { error, isSuccess, return_url } = this.state;
-    console.log(return_url);
     return (
       <React.Fragment>
         {isSuccess && (

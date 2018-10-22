@@ -8,6 +8,7 @@ import ProtectedApp from "./components/ProtectedApp";
 import LoginPage from "./components/LoginPage";
 
 import ProcessSignin from "./components/ProcessSignin";
+import ProcessSignout from "./components/ProcessSignout";
 
 const myAuth = new Auth(config.auth);
 
@@ -20,6 +21,7 @@ const App = props => (
             <Switch>
               <Route path="/signin" component={ProcessSignin} />
               <Route path="/login" component={LoginPage} />
+              <Route path="/signout" component={ProcessSignout} />
               <Route component={ProtectedApp} />
             </Switch>
           );
