@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthProvider, AuthConsumer } from "./components/AuthContext";
+import { AuthProvider } from "./components/AuthContext";
 import Auth from "./lib/Auth";
 import config from "./config";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
@@ -15,18 +15,12 @@ const myAuth = new Auth(config.auth);
 const App = props => (
   <AuthProvider auth={myAuth}>
     <Router>
-      <AuthConsumer>
-        {({ auth }) => {
-          return (
-            <Switch>
-              <Route path="/signin" component={ProcessSignin} />
-              <Route path="/login" component={LoginPage} />
-              <Route path="/signout" component={ProcessSignout} />
-              <Route component={ProtectedApp} />
-            </Switch>
-          );
-        }}
-      </AuthConsumer>
+      <Switch>
+        <Route path="/signin" component={ProcessSignin} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/signout" component={ProcessSignout} />
+        <Route component={ProtectedApp} />
+      </Switch>
     </Router>
   </AuthProvider>
 );
