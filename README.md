@@ -4,9 +4,9 @@
 
 Gen3 architecture implements a JWT token authentication and authorization scheme.  This example includes a working barebones authentication-protected React application that connects to Topaz's Auth functionality and persists authentication state via [Store.js](https://github.com/marcuswestin/store.js/), localStorage for most browsers.
 
----
+
 ## Setup Topaz (Auth Server)
----
+
   [Install docker](https://www.docker.com/get-started)
 
 Clone the [Topaz](https://github.com/iCentris/vibes) repo 
@@ -63,9 +63,9 @@ Running commands from mysql:
     +----+----------+--------------------------------------------------------------+
     1 row in set (0.00 sec)
 
----
+
 ## Setup Tanzanite React Demo Frontend
----
+
 Install latest [Node.js](https://nodejs.org/en/) (11.0.0 currently)
 
 Clone the Tanzanite repo
