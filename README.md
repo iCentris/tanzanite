@@ -1,5 +1,7 @@
 # Tanzanite - Vibe Example interface code
 
+A collection of examples detailing how to implement Vibe Gen3 functionality.
+
 # Topaz Auth / React Implementation
 
 Gen3 architecture implements a JWT token authentication and authorization scheme.  This example includes a working barebones authentication-protected React application that connects to Topaz's Auth functionality and persists authentication state via [Store.js](https://github.com/marcuswestin/store.js/), localStorage for most browsers.
