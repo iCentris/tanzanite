@@ -66,13 +66,13 @@ class ProcessSignin extends Component {
       );
 
     return (
-      <React.Fragment>
+      <div>
         Congratulations, siginin was successful.
         <br />
         <a href={return_url}>
           <button>Go to Return URL</button>
         </a>
-      </React.Fragment>
+      </div>
     );
   }
 }

@@ -29,8 +29,6 @@ class AuthProvider extends React.Component {
     this.setStateAndPersist = this.setStateAndPersist.bind(this);
     this.persistAuthState = this.persistAuthState.bind(this);
     this.getPersistedAuthState = this.getPersistedAuthState.bind(this);
-    this.getResetAuthStateVars = this.getResetAuthStateVars.bind(this);
-    this.resetAuthState = this.resetAuthState.bind(this);
     this.verifyRefreshOrLogin = this.verifyRefreshOrLogin.bind(this);
     this.refreshOrLogin = this.refreshOrLogin.bind(this);
     this.signinAndRefresh = this.signinAndRefresh.bind(this);
@@ -40,7 +38,6 @@ class AuthProvider extends React.Component {
     this.signout = this.signout.bind(this);
     this.getLoginUrl = this.getLoginUrl.bind(this);
     this.login = this.login.bind(this);
-    this.getReturnUrl = this.getReturnUrl.bind(this);
     this.buildSigninPayload = this.buildSigninPayload.bind(this);
 
     this.state = {
@@ -55,8 +52,7 @@ class AuthProvider extends React.Component {
       signout: this.signout,
       getLoginUrl: this.getLoginUrl,
       login: this.login,
-      buildSigninPayload: this.buildSigninPayload,
-      getReturnUrl: this.getReturnUrl
+      buildSigninPayload: this.buildSigninPayload
     };
   }
 
@@ -78,31 +74,11 @@ class AuthProvider extends React.Component {
     return persistedState;
   }
 
-  getResetAuthStateVars() {
-    return {
-      isVerified: false,
-      auth: this.initialState.auth,
-      error: null
-    };
-  }
-
-  resetAuthState(cb) {
-    const initAuthState = this.getResetAuthStateVars();
-    if (!!cb) return this.setState(initAuthState, cb);
-    this.setState(initAuthState);
-    //this.store.remove(this.storage_key);
-  }
-
   hydrateAuthState(cb) {
     const authState = this.getPersistedAuthState();
-    if (!authState) return;
+    if (!authState) return cb();
 
-    this.setState(
-      {
-        auth: authState
-      },
-      cb
-    );
+    this.setState({ auth: authState }, cb);
   }
 
   componentDidMount() {
@@ -123,13 +99,6 @@ class AuthProvider extends React.Component {
     };
 
     this.hydrateAuthState(cb);
-
-    //window.addEventListener("pagehide", this.persistAuthState.bind(this));
-  }
-
-  componentWillUnmount() {
-    //this.persistAuthState();
-    //window.removeEventListener("pagehide", this.persistAuthState.bind(this));
   }
 
   verifyOrRefresh() {
@@ -226,7 +195,11 @@ class AuthProvider extends React.Component {
 
   signin(payload) {
     //we need to reset auth state first before we try this
-    this.resetAuthState();
+    this.setStateAndPersist({
+      isVerified: false,
+      error: null,
+      auth: this.initialState.auth
+    });
     return this._signin(payload);
   }
 
@@ -244,6 +217,7 @@ class AuthProvider extends React.Component {
         this.setStateAndPersist({
           isLoading: false,
           isVerified: false,
+          error: null,
           auth: this.initialState.auth
         });
         return Promise.resolve();
@@ -253,6 +227,7 @@ class AuthProvider extends React.Component {
         this.setStateAndPersist({
           isLoading: false,
           isVerified: false,
+          error: null,
           auth: this.initialState.auth
         });
         return Promise.resolve();
@@ -264,19 +239,12 @@ class AuthProvider extends React.Component {
       });
   }
 
-  getReturnUrl() {
-    return window.location.href;
-  }
-
   getLoginUrl(return_url) {
-    return_url = return_url || this.getReturnUrl();
-
     return this.props.auth.getLoginUrl(return_url);
   }
 
   login() {
-    console.log(this.getLoginUrl());
-    // window.location.href = this.getLoginUrl();
+    //console.log(this.getLoginUrl());    // window.location.href = this.getLoginUrl();
   }
 
   render() {

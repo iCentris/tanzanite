@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import LoginForm from "./LoginForm";
 import querystring from "query-string";
 import { withAuth } from "../AuthContext";
+import { Link } from "react-router-dom";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -53,19 +54,19 @@ class LoginPage extends Component {
   render() {
     const { error, isSuccess, return_url } = this.state;
     return (
-      <React.Fragment>
+      <div>
         {isSuccess && (
           <div>
             Congratulations, login was successful.
             <br />
-            <a href={return_url}>
+            <Link to={return_url}>
               <button>Go to Return URL</button>
-            </a>
+            </Link>
           </div>
         )}
         {error && <div>Error! {error.message}</div>}
         {!isSuccess && <LoginForm {...this.props} handleSubmit={this.handleSubmit} /> }
-      </React.Fragment>
+      </div>
     );
   }
 }

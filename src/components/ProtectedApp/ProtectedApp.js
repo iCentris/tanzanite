@@ -14,7 +14,7 @@ class ProtectedApp extends Component {
   }
 
   getReturnUrl() {
-    return window.location.href;
+    return window.location.pathname + window.location.search + window.location.hash;
   }
 
   getLoginUrl() {
@@ -22,7 +22,9 @@ class ProtectedApp extends Component {
   }
 
   render() {
-    const { isVerified } = this.props.auth;
+    const { isVerified, initialized } = this.props.auth;
+
+    if(!initialized) return <div>Initializing...</div>;
 
     if (isVerified) {
       return (
@@ -39,9 +41,9 @@ class ProtectedApp extends Component {
     return (
       <div>
         Unauthorized access, please <br />
-        <a href={this.getLoginUrl()}>
+        <Link to={this.getLoginUrl()}>
           <button>Login</button>
-        </a>
+        </Link>
       </div>
     );
   }

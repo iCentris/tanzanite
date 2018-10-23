@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import querystring from "query-string";
 import { withAuth } from "../AuthContext";
+import { Link } from "react-router-dom";
 
 class ProcessSignout extends Component {
   constructor(props) {
@@ -60,13 +61,13 @@ class ProcessSignout extends Component {
       );
 
     return (
-      <React.Fragment>
+      <div>
         Congratulations, signout was successful.
         <br />
-        <a href={return_url}>
+        <Link to={return_url}>
           <button>Go to Return URL</button>
-        </a>
-      </React.Fragment>
+        </Link>
+      </div>
     );
   }
 }
