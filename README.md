@@ -53,7 +53,7 @@ Running commands from mysql:
     +----+----------+--------------------------------------------------------------+
     1 row in set (0.00 sec)
 
-    MariaDB [vibes_dev]> UPDATE users set username='demo', encrypted_password='$2b$12$o9jh6nTtVWwPkHPezdmFV.Wew/Qq8cZ0k21fmxpIz.pt7Pf2bMj8q' WHERE id = 1;
+    MariaDB [vibes_dev]> UPDATE users set username='demo', encrypted_password='$2b$12$l2bhoLnGJkP50C0yJxKAzeld1Ew2ek5ptF.w9ooaAsItFHt3FN4ni' WHERE id = 1;
     Query OK, 1 row affected (0.01 sec)
     Rows matched: 1  Changed: 1  Warnings: 0
 

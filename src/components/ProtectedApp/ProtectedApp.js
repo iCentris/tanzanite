@@ -1,20 +1,16 @@
 import React, { Component } from "react";
-import { withAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class ProtectedApp extends Component {
   constructor(props) {
     super(props);
 
-    this.initialState = {
-      return_url: "/"
-    };
-
     this.getReturnUrl = this.getReturnUrl.bind(this);
   }
 
   getReturnUrl() {
-    return window.location.pathname + window.location.search + window.location.hash;
+    return this.props.location.pathname + this.props.location.search + this.props.location.hash;
   }
 
   getLoginUrl() {
@@ -49,4 +45,25 @@ class ProtectedApp extends Component {
   }
 }
 
-export default withAuth(ProtectedApp);
+
+
+ProtectedApp.propTypes = {
+  auth: PropTypes.shape({
+    getLoginUrl: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+    hash: PropTypes.string,
+    pathname: PropTypes.string
+  })
+};
+
+ProtectedApp.defaultProps = {
+  location: {
+    pathname: "/",
+    hash: null,
+    search: null,
+  }
+};
+
+export default ProtectedApp;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import LoginForm from "./LoginForm";
 import querystring from "query-string";
-import { withAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -10,8 +10,8 @@ class LoginPage extends Component {
 
     this.initialState = {
       isSuccess: false,
-      return_url: "/",
-      error: null
+      error: null,
+      return_url: "/"
     };
 
     this.state = this.initialState;
@@ -32,16 +32,21 @@ class LoginPage extends Component {
           password
         });
         const return_url = this.retrieveReturnUrl(this.props.location.search);
-        return { signin_payload, return_url };
+
+        this.setState({
+          return_url
+        });
+
+        return signin_payload;
       })
-      .then(({ signin_payload, return_url }) => {
+      .then((signin_payload) => {
         return this.props.auth.signinAndRefresh(signin_payload).then(() => {
           this.setState({
             isSuccess: true,
-            return_url,
             error: null
           });
-        });
+        })
+        .catch(error => Promise.reject(error));
       })
       .catch(error => {
         this.setState({
@@ -71,4 +76,20 @@ class LoginPage extends Component {
   }
 }
 
-export default withAuth(LoginPage);
+LoginPage.propTypes = {
+  auth: PropTypes.shape({
+    signinAndRefresh: PropTypes.func.isRequired,
+    buildSigninPayload: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string
+  })
+};
+
+LoginPage.defaultProps = {
+  location: {
+    search: ""
+  }
+};
+
+export default LoginPage;

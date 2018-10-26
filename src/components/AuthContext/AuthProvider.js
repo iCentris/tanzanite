@@ -2,6 +2,8 @@ import React from "react";
 import { Provider } from "./context";
 import store from "store";
 import isEqual from "lodash.isequal";
+import PropTypes from "prop-types";
+import Auth from "../../lib/Auth";
 
 class AuthProvider extends React.Component {
   constructor(props) {
@@ -250,6 +252,11 @@ class AuthProvider extends React.Component {
   render() {
     return <Provider value={this.state}>{this.props.children}</Provider>;
   }
+}
+
+AuthProvider.propTypes = {
+  auth: PropTypes.instanceOf(Auth).isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export default AuthProvider;

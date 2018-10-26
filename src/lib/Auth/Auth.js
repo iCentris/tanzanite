@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import format from "string-template";
 import urlencode from "urlencode";
 import formurlencoded from "form-urlencoded";
-
 // import fetch from "isomorphic-fetch";
 
 class Auth {
@@ -27,6 +26,7 @@ class Auth {
       credentials: "omit"
     };
     return fetch(url, options)
+      .catch(error => Promise.reject(error))
       .then(response => {
         return response
           .text()
@@ -124,7 +124,7 @@ class Auth {
 
     return this.fetchWrap(fetchPayload)
       .then(({ data: refresh_request }) => Promise.resolve(refresh_request))
-      .catch(() => Promise.reject(Error("signinError")));
+      .catch((payload) => Promise.reject(Error("signinError")));
   }
 
   getSignoutUrl() {

@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthProvider } from "./components/AuthContext";
+import { AuthProvider, withAuth } from "./components/AuthContext";
 import Auth from "./lib/Auth";
 import config from "./config";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
@@ -12,14 +12,14 @@ import ProcessSignout from "./components/ProcessSignout";
 
 const myAuth = new Auth(config.auth);
 
-const App = props => (
+const App = () => (
   <AuthProvider auth={myAuth}>
     <Router>
       <Switch>
-        <Route path="/signin" component={ProcessSignin} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/signout" component={ProcessSignout} />
-        <Route component={ProtectedApp} />
+        <Route path="/signin" component={withAuth(ProcessSignin)} />
+        <Route path="/login" component={withAuth(LoginPage)} />
+        <Route path="/signout" component={withAuth(ProcessSignout)} />
+        <Route component={withAuth(ProtectedApp)} />
       </Switch>
     </Router>
   </AuthProvider>

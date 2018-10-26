@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import querystring from "query-string";
-import { withAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class ProcessSignout extends Component {
   constructor(props) {
@@ -24,17 +24,20 @@ class ProcessSignout extends Component {
   }
 
   componentDidMount() {
+    
+
     Promise.resolve()
       .then(() => {
         const return_url = this.retrieveReturnUrl(this.props.location.search);
-        return return_url;
+        this.setState({
+          return_url
+        });
       })
-      .then(return_url => {
+      .then(() => {
         return this.props.auth.signout().then(() => {
           this.setState({
             initialized: true,
             isSuccess: true,
-            return_url,
             error: null
           });
         });
@@ -72,4 +75,19 @@ class ProcessSignout extends Component {
   }
 }
 
-export default withAuth(ProcessSignout);
+ProcessSignout.propTypes = {
+  auth: PropTypes.shape({
+    signout: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string
+  })
+};
+
+ProcessSignout.defaultProps = {
+  location: {
+    search: null
+  }
+};
+
+export default ProcessSignout;

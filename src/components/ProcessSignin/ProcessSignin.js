@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import querystring from "query-string";
-import { withAuth } from "../AuthContext";
+import PropTypes from "prop-types";
 
 class ProcessSignin extends Component {
   constructor(props) {
@@ -32,15 +32,18 @@ class ProcessSignin extends Component {
           this.props.location.search
         );
         if (!signin_payload) return Promise.reject("No signin_payload");
+          
+        this.setState({
+          return_url
+        });
 
-        return { signin_payload, return_url };
+        return signin_payload;
       })
-      .then(({ signin_payload, return_url }) => {
+      .then((signin_payload) => {
         return this.props.auth.signinAndRefresh(signin_payload).then(() => {
           this.setState({
             initialized: true,
             isSuccess: true,
-            return_url,
             error: null
           });
         });
@@ -77,4 +80,13 @@ class ProcessSignin extends Component {
   }
 }
 
-export default withAuth(ProcessSignin);
+ProcessSignin.propTypes = {
+  auth: PropTypes.shape({
+    signinAndRefresh: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired
+  }).isRequired
+};
+
+export default ProcessSignin;
