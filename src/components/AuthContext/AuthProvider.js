@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import { Provider } from "./context";
 import store from "store";
 import isEqual from "lodash.isequal";
 import PropTypes from "prop-types";
 import Auth from "../../lib/Auth";
 
-class AuthProvider extends React.Component {
+class AuthProvider extends Component {
   constructor(props) {
     super(props);
 
@@ -263,11 +263,11 @@ AuthProvider.propTypes = {
     get: PropTypes.func.isRequired
   }),
   store_key: PropTypes.string
-}
+};
 
 AuthProvider.defaultProps = {
   store_key: "__VIBES_AUTH__",
   store
-}
+};
 
 export default AuthProvider;
