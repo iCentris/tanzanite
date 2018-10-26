@@ -124,7 +124,7 @@ class Auth {
 
     return this.fetchWrap(fetchPayload)
       .then(({ data: refresh_request }) => Promise.resolve(refresh_request))
-      .catch((payload) => Promise.reject(Error("signinError")));
+      .catch(() => Promise.reject(Error("signinError")));
   }
 
   getSignoutUrl() {
