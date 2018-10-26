@@ -45,8 +45,6 @@ class ProtectedApp extends Component {
   }
 }
 
-
-
 ProtectedApp.propTypes = {
   auth: PropTypes.shape({
     getLoginUrl: PropTypes.func.isRequired
