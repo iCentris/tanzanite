@@ -9,8 +9,8 @@ class AuthProvider extends React.Component {
   constructor(props) {
     super(props);
 
-    this.store_key = props.store_key || "__VIBES_AUTH__";
-    this.store = props.store || store;
+    this.store_key = props.store_key;
+    this.store = props.store;
 
     this.initialState = {
       initialized: false,
@@ -256,7 +256,18 @@ class AuthProvider extends React.Component {
 
 AuthProvider.propTypes = {
   auth: PropTypes.instanceOf(Auth).isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  store: PropTypes.shape({
+    remove: PropTypes.func.isRequired,
+    set: PropTypes.func.isRequired,
+    get: PropTypes.func.isRequired
+  }),
+  store_key: PropTypes.string
+}
+
+AuthProvider.defaultProps = {
+  store_key: "__VIBES_AUTH__",
+  store
 }
 
 export default AuthProvider;
