@@ -21,7 +21,7 @@ Build the docker container, takes a few minutes the first time
 
     ./local build fullstack
 
-Start container and Topaz on `localhost:4000`
+Start container and Topaz on http://localhost:4000
 
     ./local up fullstack
 
