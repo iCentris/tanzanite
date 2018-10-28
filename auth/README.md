@@ -29,7 +29,7 @@ You can use a customer environment (details TBD) or if you are a developer with 
 
 ### Running Remote Topaz
 
-Know the user to connect with.
+Know the user to connect with, and your service.  Update `src/config.js` to reflect the appropriate hostname/path to your environment.
 
 ### Running Topaz Locally
 
