@@ -10,16 +10,22 @@ The topaz architecture implements a JWT token authentication and authorization s
 
 3. Clone this repo
 
-    git clone https://github.com/iCentris/tanzanite.git
-    cd tanzanite
+```bash
+git clone https://github.com/iCentris/tanzanite.git
+cd tanzanite
+```
 
 4. Install npm dependencies:
 
-    npm install
+```bash
+npm install
+```
 
 5. Start the tanzanite example server on `localhost:3000`
 
-    npm start
+```bash
+npm start
+```
 
 6. Now open browser to http://localhost:3000 and you're all set!
 
@@ -37,31 +43,39 @@ Know the user to connect with, and your service.  Update `src/config.js` to refl
 
 Update test user to username = `demo` and password = `password1`
     
-    # install mysql client
-    apk add mysql-client
+```bash
+# install mysql client
+apk add mysql-client
+```
 
-    # login 
-    mysql -u root -h db vibes_dev
+```bash
+# login 
+mysql -u root -h db vibes_dev
+```
 
 Running commands from mysql:
 
-    MariaDB [vibes_dev]> select id, username, encrypted_password from users;
-    +----+----------+--------------------------------------------------------------+
-    | id | username | encrypted_password                                           |
-    +----+----------+--------------------------------------------------------------+
-    |  1 | andy     | N/A |
-    +----+----------+--------------------------------------------------------------+
-    1 row in set (0.00 sec)
+```
+MariaDB [vibes_dev]> select id, username, encrypted_password from users;
++----+----------+--------------------------------------------------------------+
+| id | username | encrypted_password                                           |
++----+----------+--------------------------------------------------------------+
+|  1 | andy     | N/A |
++----+----------+--------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
-    MariaDB [vibes_dev]> UPDATE users set username='demo', encrypted_password='$2b$12$l2bhoLnGJkP50C0yJxKAzeld1Ew2ek5ptF.w9ooaAsItFHt3FN4ni' WHERE id = 1;
-    Query OK, 1 row affected (0.01 sec)
-    Rows matched: 1  Changed: 1  Warnings: 0
+```
+MariaDB [vibes_dev]> UPDATE users set username='demo', encrypted_password='$2b$12$l2bhoLnGJkP50C0yJxKAzeld1Ew2ek5ptF.w9ooaAsItFHt3FN4ni' WHERE id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
 
-    MariaDB [vibes_dev]> select id, username, encrypted_password from users;
-    +----+----------+--------------------------------------------------------------+
-    | id | username | encrypted_password                                           |
-    +----+----------+--------------------------------------------------------------+
-    |  1 | demo     | $2b$12$o9jh6nTtVWwPkHPezdmFV.Wew/Qq8cZ0k21fmxpIz.pt7Pf2bMj8q |
-    +----+----------+--------------------------------------------------------------+
-    1 row in set (0.00 sec)
+MariaDB [vibes_dev]> select id, username, encrypted_password from users;
++----+----------+--------------------------------------------------------------+
+| id | username | encrypted_password                                           |
++----+----------+--------------------------------------------------------------+
+|  1 | demo     | $2b$12$o9jh6nTtVWwPkHPezdmFV.Wew/Qq8cZ0k21fmxpIz.pt7Pf2bMj8q |
++----+----------+--------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
