@@ -1,40 +1,40 @@
-# Tanzanite - Vibe Example interface code
-
-A collection of examples detailing how to implement Vibe Gen3 functionality.
-
 # Topaz Auth / React Implementation
 
-Gen3 architecture implements a JWT token authentication and authorization scheme.  This example includes a working barebones authentication-protected React application that connects to Topaz's Auth functionality and persists authentication state via [Store.js](https://github.com/marcuswestin/store.js/), localStorage for most browsers.
+The topaz architecture implements a JWT token authentication and authorization scheme.  This example includes a working barebones authentication-protected React application that connects to Topaz's Auth functionality and persists authentication state via [Store.js](https://github.com/marcuswestin/store.js/), localStorage for most browsers.
 
+## Setup Frontend Example (served via Node)
 
-## Setup Topaz (Auth Server)
+1. Identify which Topaz/Vibes server you will use (See below--Local or Remote).
 
-  [Install docker](https://www.docker.com/get-started)
+2. Install latest [Node.js](https://nodejs.org/en/) (11.0.0 currently)
 
-Clone the [Topaz](https://github.com/iCentris/vibes) repo 
+3. Clone this repo
 
+    git clone https://github.com/iCentris/tanzanite.git
+    cd tanzanite
 
-    git clone https://github.com/iCentris/vibes.git
-    cd vibes 
+4. Install npm dependencies:
 
-Build the docker container, takes a few minutes the first time
+    npm install
 
-    ./local build fullstack
+5. Start the tanzanite example server on `localhost:3000`
 
-Start container and Topaz on http://localhost:4000
+    npm start
 
-    ./local up fullstack
+6. Now open browser to http://localhost:3000 and you're all set!
 
-If this is your first time running Topaz or you want to start with a fresh db state...
+## Topaz Auth Server
 
-Open a new terminal and shell into the container:
-   
-    ./local run-sh fullstack /bin/bash
+You can use a customer environment (details TBD) or if you are a developer with local topaz development access, you can [run Topaz/Vibes locally](https://github.com/iCentris/vibes).
 
-Now reset the db:
+### Running Remote Topaz
 
-    mix ecto.reset
-  
+Know the user to connect with.
+
+### Running Topaz Locally
+
+{{ TBD: this is something we can pull from the ecto seed info. }}
+
 Update test user to username = `demo` and password = `password1`
     
     # install mysql client
@@ -65,22 +65,3 @@ Running commands from mysql:
     +----+----------+--------------------------------------------------------------+
     1 row in set (0.00 sec)
 
-
-## Setup Tanzanite React Demo Frontend
-
-Install latest [Node.js](https://nodejs.org/en/) (11.0.0 currently)
-
-Clone the Tanzanite repo
-
-    git clone https://github.com/iCentris/tanzanite.git
-    cd tanzanite
-
-Install npm dependencies:
-
-    npm install
-
-Start the tanzanite server on `localhost:3000`
-
-    npm start
-
-Now open browser to http://localhost:3000 and you're all set!
