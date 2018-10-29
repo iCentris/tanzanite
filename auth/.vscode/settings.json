@@ -1,3 +1,11 @@
 {
-  "git.ignoreLimitWarning": true
+  "editor.snippetSuggestions": "top",
+  "editor.tabSize": 2,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": false,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "javascript.validate.enable": false,
+  "eslint.autoFixOnSave": true,
+  "eslint.options": { "ignorePath": ".gitignore" }
 }
