@@ -12,6 +12,11 @@ module.exports = {
   'plugins': [
     'jsx-a11y'
   ],
+  'settings': {
+    'react': {
+      'version': '16.5.2'
+    }
+  },
   'rules': {
     'jsx-a11y/label-has-for': 0,
     "react/no-unescaped-entities": ["error", {"forbid": [">", "}"]}],
