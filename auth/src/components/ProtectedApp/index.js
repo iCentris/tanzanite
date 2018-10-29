@@ -1,1 +1,1 @@
-export { default } from "./ProtectedApp";
+export { default } from './ProtectedApp'

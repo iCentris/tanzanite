@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class LoginForm extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
-      username: "",
-      password: ""
-    };
+      username: '',
+      password: ''
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(event) {
-    const { name, value } = event.target;
+  handleChange (event) {
+    const { name, value } = event.target
 
     this.setState({
       [name]: value
-    });
+    })
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    return this.props.handleSubmit(this.state);
+  handleSubmit (event) {
+    event.preventDefault()
+    return this.props.handleSubmit(this.state)
   }
 
-  render() {
+  render () {
     return (
       <form id="signin_form" method="post" onSubmit={this.handleSubmit}>
         Username:
@@ -52,12 +52,12 @@ class LoginForm extends Component {
         <br />
         <input type="submit" value="Signin" />
       </form>
-    );
+    )
   }
 }
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired
-};
+}
 
-export default LoginForm;
+export default LoginForm

@@ -1,10 +1,14 @@
-import React from "react";
-import { AuthConsumer } from "./index";
+import React from 'react'
+import { AuthConsumer } from './index'
+import getDisplayName from 'react-display-name'
 
-const withAuth = Component => {
-  return props => (
-    <AuthConsumer>{auth => <Component {...props} auth={auth} />}</AuthConsumer>
-  );
-};
+const withAuth = WrappedComponent => {
+  const wrapped = props => (
+    <AuthConsumer>{auth => <WrappedComponent {...props} auth={auth} />}</AuthConsumer>
+  )
 
-export default withAuth;
+  wrapped.displayName = `wrapped(${getDisplayName(WrappedComponent)})`
+  return wrapped
+}
+
+export default withAuth

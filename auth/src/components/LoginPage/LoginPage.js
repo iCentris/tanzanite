@@ -1,70 +1,70 @@
-import React, { Component } from "react";
-import LoginForm from "./LoginForm";
-import querystring from "query-string";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { Component } from 'react'
+import LoginForm from './LoginForm'
+import querystring from 'query-string'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class LoginPage extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.initialState = {
       isSuccess: false,
       error: null,
-      return_url: "/"
-    };
+      returnUrl: '/'
+    }
 
-    this.state = this.initialState;
+    this.state = this.initialState
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.retrieveReturnUrl = this.retrieveReturnUrl.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.retrieveReturnUrl = this.retrieveReturnUrl.bind(this)
   }
 
-  retrieveReturnUrl(search) {
-    return querystring.parse(search).payload || this.state.return_url;
+  retrieveReturnUrl (search) {
+    return querystring.parse(search).payload || this.state.returnUrl
   }
 
-  handleSubmit({ username, password }) {
+  handleSubmit ({ username, password }) {
     Promise.resolve()
       .then(() => {
-        const signin_payload = this.props.auth.buildSigninPayload({
+        const signinPayload = this.props.auth.buildSigninPayload({
           username,
           password
-        });
-        const return_url = this.retrieveReturnUrl(this.props.location.search);
+        })
+        const returnUrl = this.retrieveReturnUrl(this.props.location.search)
 
         this.setState({
-          return_url
-        });
+          returnUrl
+        })
 
-        return signin_payload;
+        return signinPayload
       })
-      .then((signin_payload) => {
-        return this.props.auth.signinAndRefresh(signin_payload).then(() => {
+      .then((signinPayload) => {
+        return this.props.auth.signinAndRefresh(signinPayload).then(() => {
           this.setState({
             isSuccess: true,
             error: null
-          });
+          })
         })
-        .catch(error => Promise.reject(error));
+          .catch(error => Promise.reject(error))
       })
       .catch(error => {
         this.setState({
           isSuccess: false,
           error
-        });
-      });
+        })
+      })
   }
 
-  render() {
-    const { error, isSuccess, return_url } = this.state;
+  render () {
+    const { error, isSuccess, returnUrl } = this.state
     return (
       <div>
         {isSuccess && (
           <div>
             Congratulations, login was successful.
             <br />
-            <Link to={return_url}>
+            <Link to={returnUrl}>
               <button>Go to Return URL</button>
             </Link>
           </div>
@@ -72,7 +72,7 @@ class LoginPage extends Component {
         {error && <div>Error! {error.message}</div>}
         {!isSuccess && <LoginForm {...this.props} handleSubmit={this.handleSubmit} /> }
       </div>
-    );
+    )
   }
 }
 
@@ -84,12 +84,12 @@ LoginPage.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string
   })
-};
+}
 
 LoginPage.defaultProps = {
   location: {
-    search: ""
+    search: ''
   }
-};
+}
 
-export default LoginPage;
+export default LoginPage

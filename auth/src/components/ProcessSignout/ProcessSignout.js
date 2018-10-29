@@ -1,37 +1,35 @@
-import React, { Component } from "react";
-import querystring from "query-string";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { Component } from 'react'
+import querystring from 'query-string'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class ProcessSignout extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.initialState = {
       initialized: false,
       isSuccess: false,
-      return_url: "/",
+      returnUrl: '/',
       error: null
-    };
+    }
 
-    this.state = this.initialState;
+    this.state = this.initialState
 
-    this.retrieveReturnUrl = this.retrieveReturnUrl.bind(this);
+    this.retrieveReturnUrl = this.retrieveReturnUrl.bind(this)
   }
 
-  retrieveReturnUrl(search) {
-    return querystring.parse(search).payload || this.state.return_url;
+  retrieveReturnUrl (search) {
+    return querystring.parse(search).payload || this.state.returnUrl
   }
 
-  componentDidMount() {
-    
-
+  componentDidMount () {
     Promise.resolve()
       .then(() => {
-        const return_url = this.retrieveReturnUrl(this.props.location.search);
+        const returnUrl = this.retrieveReturnUrl(this.props.location.search)
         this.setState({
-          return_url
-        });
+          returnUrl
+        })
       })
       .then(() => {
         return this.props.auth.signout().then(() => {
@@ -39,39 +37,40 @@ class ProcessSignout extends Component {
             initialized: true,
             isSuccess: true,
             error: null
-          });
-        });
+          })
+        })
       })
       .catch(error => {
-        //signout isn't implemented yet server side
+        // signout isn't implemented yet server side
         this.setState({
           initialized: true,
           isSuccess: false,
           error
-        });
-      });
+        })
+      })
   }
 
-  render() {
-    const { initialized, isSuccess, return_url, error } = this.state;
-    if (!initialized) return <div>Processing signout request...</div>;
-    if (!isSuccess)
+  render () {
+    const { initialized, isSuccess, returnUrl, error } = this.state
+    if (!initialized) return <div>Processing signout request...</div>
+    if (!isSuccess) {
       return (
         <div>
           We're sorry, but we were unable to signout because:
           {error.message}
         </div>
-      );
+      )
+    }
 
     return (
       <div>
         Congratulations, signout was successful.
         <br />
-        <Link to={return_url}>
+        <Link to={returnUrl}>
           <button>Go to Return URL</button>
         </Link>
       </div>
-    );
+    )
   }
 }
 
@@ -82,12 +81,12 @@ ProcessSignout.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string
   })
-};
+}
 
 ProcessSignout.defaultProps = {
   location: {
     search: null
   }
-};
+}
 
-export default ProcessSignout;
+export default ProcessSignout

@@ -1,3 +1,3 @@
-import { Consumer } from "./context";
+import { Consumer } from './context'
 
-export default Consumer;
+export default Consumer

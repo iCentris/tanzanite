@@ -1,1 +1,1 @@
-export { default } from "./ProcessSignout";
+export { default } from './ProcessSignout'
