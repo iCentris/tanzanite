@@ -19,7 +19,11 @@ module.exports = {
   },
   'rules': {
     'jsx-a11y/label-has-for': 0,
-    "react/no-unescaped-entities": ["error", {"forbid": [">", "}"]}],
+    'react/no-unescaped-entities': [
+      'error', {
+        'forbid': [ '>', '}' ]
+      }
+    ],
   },
   'env': {
     'browser': true,
