@@ -6,5 +6,5 @@ Copyright 2018 iCentris.  License for use of these samples only is per terms of 
 
 Read the individual sub folders for each example:
 
-* [Authentication](/auth/)
+* [Authentication with Signin using React](/auth-signin-react/)
 
