@@ -30,5 +30,6 @@ yarn start
 
 ## USAGE
 
-**Username** = avon's rep account number (rep.acct_nr)
-**Password** = md5 signature hash (same as sent to Web Office)
+**Username**: avon's rep account number (rep.acct_nr)
+
+**Password**: md5 signature hash (same as sent to Web Office)
